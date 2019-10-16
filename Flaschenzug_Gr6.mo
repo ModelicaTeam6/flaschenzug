@@ -26,27 +26,27 @@ package Flaschenzug_Gr6
       Icon(graphics = {Ellipse(fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, extent = {{-60, 60}, {60, -60}}, endAngle = 360), Ellipse(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, 20}, {20, -20}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)));
   end Rolle;
 
-  model Masse
-      Flaschenzug_Gr6.Connectoren.SeilConnect seilConnect1 annotation(
-      Placement(visible = true, transformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 68}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-   
-   constant Real g_n=9.80665;
-   parameter Real m = 1;
-   Real n = if seilConnect1.nGes < 1 then 1 else seilConnect1.nGes;
-   Real h;         // Hubhöhe
-   Real v;         //Hubgeschwindigkeit
-   Real a;    
+model Masse
+    Flaschenzug_Gr6.Connectoren.SeilConnect seilConnect1 annotation(
+    Placement(visible = true, transformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 68}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+ 
+ constant Real g_n=9.80665;
+ parameter Real m = 1;
+ Real n = if seilConnect1.nGes < 1 then 1 else seilConnect1.nGes; //Null Rollen entspricht dem Zustand mit einer Rolle
+ Real h;             // Hubhöhe
+ Real v;             //Hubgeschwindigkeit
+ Real a;    
 //Hubbeschleunigung
-  equation
-     
-    seilConnect1.Fz * seilConnect1.nGes = m * g_n; //Gewichtskraft Fg = m*g = n*Fz
-    h = seilConnect1.s / n;
-    der(h) = v;
-    der(v) = a;
-    
-    annotation(
-      Icon(graphics = {Ellipse(origin = {0, 40}, fillColor = {130, 130, 130}, fillPattern = FillPattern.Solid, extent = {{-30, 30}, {30, -30}}, endAngle = 360), Ellipse(origin = {0, 40}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, 20}, {20, -20}}, endAngle = 360), Polygon(origin = {0, 10}, fillColor = {130, 130, 130}, fillPattern = FillPattern.Solid, points = {{-40, 30}, {40, 30}, {60, -30}, {-60, -30}, {-60, -30}, {-40, 30}})}));
-  end Masse;
+equation
+   
+  seilConnect1.Fz * n = m * g_n; //Gewichtskraft Fg = m*g = n*Fz
+  h = seilConnect1.s / n;
+  der(h) = v;
+  der(v) = a;
+  
+  annotation(
+    Icon(graphics = {Ellipse(origin = {0, 40}, fillColor = {130, 130, 130}, fillPattern = FillPattern.Solid, extent = {{-30, 30}, {30, -30}}, endAngle = 360), Ellipse(origin = {0, 40}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, 20}, {20, -20}}, endAngle = 360), Polygon(origin = {0, 10}, fillColor = {130, 130, 130}, fillPattern = FillPattern.Solid, points = {{-40, 30}, {40, 30}, {60, -30}, {-60, -30}, {-60, -30}, {-40, 30}})}));
+end Masse;
 
   model PlHa_Motor
   Flaschenzug_Gr6.Connectoren.SeilConnect seilConnect1 annotation(
@@ -61,6 +61,16 @@ package Flaschenzug_Gr6
 
   annotation(
       Icon(graphics = {Rectangle(origin = {10, -10}, fillPattern = FillPattern.Solid, extent = {{-90, 90}, {70, -70}}), Text(origin = {-28, 0}, lineColor = {255, 255, 255}, extent = {{-52, 40}, {108, 0}}, textString = "Platzhalter"), Text(origin = {-28, -34}, lineColor = {255, 255, 255}, extent = {{-52, 40}, {108, 0}}, textString = "fuer Motor")}, coordinateSystem(initialScale = 0.1)));end PlHa_Motor;
+
+  model Null_Rollen
+  Flaschenzug_Gr6.PlHa_Motor plHa_Motor1 annotation(
+      Placement(visible = true, transformation(origin = {-28, 56}, extent = {{-36, -36}, {36, 36}}, rotation = 0)));
+  Flaschenzug_Gr6.Masse masse1 annotation(
+      Placement(visible = true, transformation(origin = {5, -51}, extent = {{-45, -45}, {45, 45}}, rotation = 0)));
+  equation
+    connect(plHa_Motor1.seilConnect1, masse1.seilConnect1) annotation(
+      Line(points = {{0, 38}, {4, 38}, {4, -20}, {6, -20}}));
+  end Null_Rollen;
 
   model Eine_Rolle
     Flaschenzug_Gr6.PlHa_Motor plHa_Motor1(s = 1)  annotation(
