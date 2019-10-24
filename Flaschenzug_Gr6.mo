@@ -37,7 +37,7 @@ package Flaschenzug_Gr6
     seilConnect1.s = seilConnect2.s;
     seilConnect1.nGes + abs(n) = seilConnect2.nGes;
     annotation(
-      Icon(graphics = {Ellipse(fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, extent = {{-60, 60}, {60, -60}}, endAngle = 360), Ellipse(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, 20}, {20, -20}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)));
+      Icon(graphics = {Ellipse(fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, extent = {{-60, 60}, {60, -60}}, endAngle = 360), Ellipse(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, 20}, {20, -20}}, endAngle = 360), Text(origin = {-3, -42}, extent = {{-19, 8}, {19, -8}}, textString = "n=%n")}, coordinateSystem(initialScale = 0.1)));
   end Rolle;
 
   model Masse
@@ -180,7 +180,7 @@ seilConnect1.nGes = 0;
     model Zwei_Rollen
       Flaschenzug_Gr6.PlHa_Motor plHa_Motor1(I = -1) annotation(
         Placement(visible = true, transformation(origin = {-64, -18}, extent = {{-28, -28}, {28, 28}}, rotation = 0)));
-      Flaschenzug_Gr6.Rolle rolle1(n = 2) annotation(
+      Flaschenzug_Gr6.Rolle rolle1(n = 1) annotation(
         Placement(visible = true, transformation(origin = {-11, 59}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
       Flaschenzug_Gr6.Masse masse1(m = 1) annotation(
         Placement(visible = true, transformation(origin = {44, -30}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
