@@ -37,7 +37,7 @@ package Flaschenzug_Gr6
     seilConnect1.s = seilConnect2.s;
     seilConnect1.nGes + abs(n) = seilConnect2.nGes;
     annotation(
-      Icon(graphics = {Ellipse(fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, extent = {{-60, 60}, {60, -60}}, endAngle = 360), Ellipse(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, 20}, {20, -20}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)));
+      Icon(graphics = {Ellipse(fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, extent = {{-60, 60}, {60, -60}}, endAngle = 360), Ellipse(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, 20}, {20, -20}}, endAngle = 360), Text(origin = {-3, -42}, extent = {{-19, 8}, {19, -8}}, textString = "n=%n")}, coordinateSystem(initialScale = 0.1)));
   end Rolle;
 
   model Masse
@@ -93,12 +93,14 @@ package Flaschenzug_Gr6
     parameter Real ke = 1.24 "Drehmomentkonstante";
     parameter Real P = 3200 "Leistung";
     
+    parameter Real d=+1 "Drehrichtung (+=positiv; -=negativ)";
+    
     Real w;
     
     equation
       //seilConnect1.nGes = 0;
       //Fz + seilConnect1.Fz = 0;
-      w = P/ (ke * stromPort1.I);
+      w = P/ (ke * d*stromPort1.I);
       seilPort1.w = w;
       annotation(
         Icon(graphics = {Ellipse(fillColor = {85, 0, 255}, fillPattern = FillPattern.Solid, extent = {{-60, 58}, {60, -58}}, endAngle = 360), Text(origin = {2, 1}, extent = {{-32, 23}, {32, -23}}, textString = "Motor")}));
@@ -131,7 +133,7 @@ seilConnect1.nGes = 0;
     parameter Real I = 1 "Erregerstrom";
     
     equation
-    stromPort1.I = I;
+    stromPort1.I = abs(I);
 
     annotation(
         Icon(graphics = {Ellipse(fillColor = {201, 201, 201}, fillPattern = FillPattern.Solid,extent = {{-40, 40}, {40, -40}}, endAngle = 360), Ellipse(origin = {-19, 1}, fillPattern = FillPattern.Solid, extent = {{-11, 11}, {11, -11}}, endAngle = 360), Ellipse(origin = {19, 1}, fillPattern = FillPattern.Solid, extent = {{-11, 11}, {11, -11}}, endAngle = 360)}));end Stromquelle;
@@ -180,7 +182,7 @@ seilConnect1.nGes = 0;
     model Zwei_Rollen
       Flaschenzug_Gr6.PlHa_Motor plHa_Motor1(I = -1) annotation(
         Placement(visible = true, transformation(origin = {-64, -18}, extent = {{-28, -28}, {28, 28}}, rotation = 0)));
-      Flaschenzug_Gr6.Rolle rolle1(n = 2) annotation(
+      Flaschenzug_Gr6.Rolle rolle1(n = 1) annotation(
         Placement(visible = true, transformation(origin = {-11, 59}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
       Flaschenzug_Gr6.Masse masse1(m = 1) annotation(
         Placement(visible = true, transformation(origin = {44, -30}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
@@ -200,7 +202,7 @@ seilConnect1.nGes = 0;
         Placement(visible = true, transformation(origin = {-8.88178e-16, 44}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Flaschenzug_Gr6.Masse masse1 annotation(
         Placement(visible = true, transformation(origin = {0, -38}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Antrieb.Motor motor1 annotation(
+  Antrieb.Motor motor1(d = -1)  annotation(
         Placement(visible = true, transformation(origin = {-58, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Flaschenzug_Gr6.Antrieb.Seiltrommel seiltrommel1 annotation(
         Placement(visible = true, transformation(origin = {-36, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
