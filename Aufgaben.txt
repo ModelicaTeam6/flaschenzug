@@ -1,0 +1,6 @@
+Aufgaben Modelica: 
+- Motor auslegen, dass er richtig funktioniert -> Alex + Maxi
+- gewichtskraft in der masse anzeigen -> Alex + Maxi
+- Zweite Rolle hinzufügen -> Christian (Theorie), Hüseyin (Praxis)
+- Rollen und Motor defaultmäßig mit einem Wirkungsgrad versehen -> Christian
+- One Pager machen -> Hüseyin
