@@ -63,6 +63,27 @@ package Flaschenzug_Gr6
       Icon(graphics = {Ellipse(fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-60, 60}, {60, -60}}, endAngle = 360), Ellipse(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-20, 20}, {20, -20}}, endAngle = 360), Text(origin = {-9, -30}, extent = {{-19, 8}, {41, -12}}, textString = "n=%n")}, coordinateSystem(initialScale = 0.1)));
   end Rolle;
 
+  model Rolle_2
+  Flaschenzug_Gr6.Connectoren.SeilConnect seilConnect1 annotation(
+      Placement(visible = true, transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-90, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Flaschenzug_Gr6.Connectoren.SeilConnect seilConnect2 annotation(
+      Placement(visible = true, transformation(origin = {-60, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {90, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    parameter Integer n = 2 "Anzahl der Rollen";
+    parameter Real eta = 100 "Wirkungsgrad in %";
+    Real Wirk = if abs(seilConnect1.nGes) > abs(seilConnect2.nGes) then (eta / 100) ^ n else 1 / (eta / 100) ^ n;
+    Flaschenzug_Gr6.Connectoren.SeilConnect seilConnect3 annotation(
+      Placement(visible = true, transformation(origin = {-60, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  equation
+    seilConnect1.Fz = Wirk * seilConnect2.Fz;
+    seilConnect1.s = seilConnect2.s;
+    seilConnect1.Fz = Wirk * seilConnect3.Fz;
+    seilConnect1.s = seilConnect3.s;
+    abs(seilConnect1.nGes) + abs(seilConnect2.nGes) + n -1 = seilConnect3.nGes;
+    abs(seilConnect3.nGes2) + abs(seilConnect2.nGes2) + n = seilConnect1.nGes2;
+    annotation(
+      Icon(graphics = {Ellipse(fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-90, 90}, {90, -88}}, endAngle = 360), Ellipse(origin = {-10, 12}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-20, 20}, {40, -40}}, endAngle = 360), Text(origin = {5, 58}, extent = {{-39, 14}, {41, -26}}, textString = "n=%n"), Text(origin = {-5, -48}, extent = {{-65, 16}, {75, -12}}, textString = "η=%eta")}, coordinateSystem(initialScale = 0.1)));
+  end Rolle_2;
+
   model Masse
     Flaschenzug_Gr6.Connectoren.SeilConnect seilConnect1 annotation(
       Placement(visible = true, transformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {5.55112e-15, 86}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
@@ -90,6 +111,26 @@ package Flaschenzug_Gr6
       Icon(graphics = {Ellipse(origin = {-10, 48}, fillColor = {130, 130, 130}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-40, 40}, {60, -60}}, endAngle = 360), Ellipse(origin = {10, 30}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-40, 40}, {20, -22}}, endAngle = 360),  Text(origin = {-74, -90}, extent = {{-22, 30}, {172, -10}}, textString = "Masse = %m kg"), Polygon(origin = {0, -10}, fillColor = {130, 130, 130}, fillPattern = FillPattern.Solid, lineThickness = 0.5, points = {{-60, 50}, {60, 50}, {100, -50}, {-100, -50}, {-60, 50}})}, coordinateSystem(initialScale = 0.1)));
   end Masse;
 
+  model Decke
+  
+  Flaschenzug_Gr6.Connectoren.SeilConnect seilConnect1 annotation(
+      Placement(visible = true, transformation(origin = {2, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2, 58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  
+  Modelica.SIunits.Force F;
+  Modelica.SIunits.Length delta_x;
+  
+  equation
+  seilConnect1.nGes2 = 0;
+  seilConnect1.nGes = 1;
+  F + seilConnect1.Fz = 0;
+  delta_x = 0 * seilConnect1.s;
+  
+  annotation(
+      Icon(graphics = {Line(origin = {0, 60}, points = {{-100, 0}, {100, 0}, {100, 0}, {100, 0}}, thickness = 1.5), Line(origin = {-90, 70}, points = {{10, -10}, {-10, 10}, {-10, 10}, {-10, 10}}), Line(origin = {-70, 70}, points = {{10, -10}, {-10, 10}}), Line(origin = {-49.8789, 70.1211}, points = {{10, -10}, {-10, 10}}), Line(origin = {-29.8181, 70}, points = {{10, -10}, {-10, 10}}), Line(origin = {-10.2272, 70.0001}, points = {{10, -10}, {-10, 10}}), Line(origin = {10.0658, 70.0049}, points = {{10, -10}, {-10, 10}}), Line(origin = {89.8435, 70.121}, points = {{10, -10}, {-10, 10}}), Line(origin = {69.3183, 70.0001}, points = {{10, -10}, {-10, 10}}), Line(origin = {49.7274, 70}, points = {{10, -10}, {-10, 10}}), Line(origin = {29.8987, 70.121}, points = {{10, -10}, {-10, 10}})}, coordinateSystem(extent = {{-100, 47}, {100, 80}}, initialScale = 0.1)),
+      Diagram(coordinateSystem(extent = {{-100, 47}, {100, 80}})),
+      __OpenModelica_commandLineOptions = "");
+  end Decke;
+
   package Antrieb
     model Motor
         Flaschenzug_Gr6.Connectoren.Spannungsport spannungsport1 annotation(
@@ -97,6 +138,7 @@ package Flaschenzug_Gr6
         Flaschenzug_Gr6.Connectoren.SeilPort seilPort1 annotation(
           Placement(visible = true, transformation(origin = {60, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {69, 1}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
         parameter Real Jgm = 0.0000306 "Motorträgheitsmoment";
+          parameter Real d = -1 "Drehrichtung";
        //parameter Real ke = 1;
        parameter Modelica.SIunits.Current Ia_rat = 6.7 "Erregerstrom";
        parameter Modelica.SIunits.Current Ia_sat = 0.1 "Sättigungsstrom";
@@ -109,34 +151,31 @@ package Flaschenzug_Gr6
        parameter Modelica.SIunits.Inductance L_a = 1e-4 "Ankerinduktivitaet";
        parameter Modelica.SIunits.Voltage U_b = 0.5 "Bürstenspannung";
       //parameter Real ke = 0.1;
-      Modelica.SIunits.ElectricalTorqueConstant ke_rem; //Hilfsvariable von ke
-      Real delta_ke_sat = ke_rat*(1-crem)/(1-exp(-1))*exp(-csat)/Ia_rat; //Hilfsvariable 2 von ke;
+      Modelica.SIunits.ElectricalTorqueConstant ke_rem;             //Hilfsvariable von ke
+      Real delta_ke_sat = ke_rat*(1-crem)/(1-exp(-1))*exp(-csat)/Ia_rat;             //Hilfsvariable 2 von ke;
       Modelica.SIunits.ElectricalTorqueConstant ke; 
       Modelica.SIunits.RotationalDampingConstant kt = ke/(2*Modelica.Constants.pi);
       Modelica.SIunits.Current I;
       Modelica.SIunits.Voltage Ug;
       Modelica.SIunits.Torque M_eff;
-        
-       // Real P; //Leistung
+        // Real P; //Leistung
       output Modelica.SIunits.AngularVelocity w;
       Modelica.SIunits.Torque M_E;
       input Modelica.SIunits.Torque M_L;
     equation
-    
-    //Berechnung des Stroms
-        ke = if abs(I)<=Ia_sat then ke_rem+(ke_rat*(1-crem)/(1-exp(-1)))*(1-exp(-I/Ia_rat)) else ke_rat*(1-crem)/(1-exp(-1))+ke_rem + delta_ke_sat*(I-Ia_rat);
+//Berechnung des Stroms
+      ke = if abs(I) <= Ia_sat then ke_rem + ke_rat * (1 - crem) / (1 - exp(-1)) * (1 - exp(-I / Ia_rat)) else ke_rat * (1 - crem) / (1 - exp(-1)) + ke_rem + delta_ke_sat * (I - Ia_rat);
         ke_rem = crem*ke_rat;
         Ug = ke*w*2*Modelica.Constants.pi;
         spannungsport1.U = I*(R_a+R_fw)+(L_fw+L_a)*der(I)+Ug+2*U_b;
-    
-    
-    //Berechnung des Moments
-        M_E = kt * I;
-        M_L = seilPort1.M_L;   
-        seilPort1.w = w;
-        M_E-M_L= (Jgm+M_L*seilPort1.r)*der(w);
+//Berechnung des Moments
+      M_E = kt * I;
+        M_L = seilPort1.M_L;
+//seilPort1.w = d*w;
+      M_E - M_L = (Jgm + M_L * seilPort1.r) * der(w);
         M_eff = M_E-M_L;
-    
+//seilPort1.w = if spannungsport1.U == 0 then 0 else d*w;
+        seilPort1.w = d*w;
         spannungsport1.U = seilPort1.U;
         M_E = seilPort1.M_E;
         
@@ -161,12 +200,12 @@ package Flaschenzug_Gr6
       seilPort1.r=r;
       F_za = seilConnect1.Fz/seilConnect1.nGes2;
       v = seilPort1.w * r;
-      //s_help = s_max*(1-exp(seilConnect1.s));
+//s_help = s_max*(1-exp(seilConnect1.s));
       der(seilConnect1.s) = v;
-      //seilConnect1.s = s_max*(1-exp(seilConnect1.s));
-      seilPort1.M_L = if seilPort1.U <= 0 then  seilPort1.M_E else -F_za*r;
-      //M_L * seilPort1.w - F_z * v =0;
-      
+//seilConnect1.s = s_max*(1-exp(seilConnect1.s));
+      seilPort1.M_L = if seilPort1.U <= 0 then seilPort1.M_E else -F_za * r;
+//v = if seilPort1.U == 0 then 0 else if seilPort1.U <= 0 then -seilPort1.w * r else seilPort1.w;
+//M_L * seilPort1.w - F_z * v =0;
       annotation(
         Icon(graphics = {Rectangle(origin = {-48, 44}, fillColor = {201, 201, 201}, fillPattern = FillPattern.Solid, extent = {{-40, 4}, {140, -16}}), Rectangle(origin = {-10, -54}, fillColor = {201, 201, 201}, fillPattern = FillPattern.Solid, extent = {{-80, 4}, {100, -16}}), Rectangle(origin = {-8, -8}, fillColor = {201, 201, 201}, fillPattern = FillPattern.Solid, extent = {{-40, 36}, {58, -42}}), Line(origin = {-29.8524, -7.95902}, points = {{-17.5459, 29.8937}, {80.4541, 9.89366}, {-17.5459, 9.89366}, {80.4541, -10.1063}, {-17.5459, -10.1063}, {80.4541, -30.1063}, {-17.5459, -30.1063}}, thickness = 1), Rectangle(origin = {0, 53}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 9}, {6, -5}})}, coordinateSystem(initialScale = 0.1)));
     end Seiltrommel;
@@ -271,6 +310,46 @@ package Flaschenzug_Gr6
         Line(points = {{-19, 64}, {-5.5, 64}, {-5.5, 65}, {8, 65}}));
       
     end Flaschenzug_Test;
+
+    model Bsp2Rollen
+    Flaschenzug_Gr6.Antrieb.Antrieb antrieb1 annotation(
+        Placement(visible = true, transformation(origin = {-52, 16}, extent = {{-22, -22}, {22, 22}}, rotation = 0)));
+  Flaschenzug_Gr6.Masse masse1 annotation(
+        Placement(visible = true, transformation(origin = {58, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Rolle rolle1 annotation(
+        Placement(visible = true, transformation(origin = {52, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Rolle_2 rolle_21 annotation(
+        Placement(visible = true, transformation(origin = {6, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Decke decke1 annotation(
+        Placement(visible = true, transformation(origin = {14, 58}, extent = {{-10, 4.7}, {10, 8}}, rotation = 0)));
+    equation
+      connect(rolle_21.seilConnect3, rolle1.seilConnect1) annotation(
+        Line(points = {{6, -2}, {46, -2}, {46, 8}, {46, 8}}));
+      connect(rolle_21.seilConnect2, decke1.seilConnect1) annotation(
+        Line(points = {{16, 8}, {14, 8}, {14, 64}, {14, 64}}));
+      connect(antrieb1.seilConnect1, rolle_21.seilConnect1) annotation(
+        Line(points = {{-36, 6}, {-2, 6}, {-2, 8}, {-4, 8}}));
+      connect(rolle1.seilConnect2, masse1.seilConnect1) annotation(
+        Line(points = {{58, 8}, {58, -21}}));
+    end Bsp2Rollen;
+
+    model Bsp3Rollen
+    Antrieb.Antrieb antrieb1 annotation(
+        Placement(visible = true, transformation(origin = {-56, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Rolle rolle1 annotation(
+        Placement(visible = true, transformation(origin = {-22, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Rolle rolle2(n = 2)  annotation(
+        Placement(visible = true, transformation(origin = {14, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Masse masse1 annotation(
+        Placement(visible = true, transformation(origin = {42, 2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    equation
+      connect(rolle2.seilConnect2, masse1.seilConnect1) annotation(
+        Line(points = {{20, 20}, {42, 20}, {42, 10}, {42, 10}}));
+      connect(rolle1.seilConnect2, rolle2.seilConnect1) annotation(
+        Line(points = {{-16, 20}, {8, 20}, {8, 20}, {8, 20}}));
+      connect(antrieb1.seilConnect1, rolle1.seilConnect1) annotation(
+        Line(points = {{-48, 14}, {-28, 14}, {-28, 20}, {-28, 20}}));
+    end Bsp3Rollen;
   end Modelle;
 
   package Beispiele
