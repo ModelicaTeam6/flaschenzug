@@ -2123,7 +2123,6 @@ package Flaschenzug_Gruppe6 "Modell zur Erstellung eines Flaschenzuges im Rahmen
 
     package Antrieb
       model Antrieb "Antrieb"
-        
         //Parameter aus der Spannungsquelle
         parameter Modelica.SIunits.Voltage U "Versorgungsspannung" annotation(
         Dialog(tab = "Spannungsquelle"));
@@ -2161,31 +2160,29 @@ package Flaschenzug_Gruppe6 "Modell zur Erstellung eines Flaschenzuges im Rahmen
         Dialog(tab = "Seiltrommel"));
         parameter Modelica.SIunits.Length s_max = 0.1 "maximale Seillänge" annotation(
         Dialog(tab = "Seiltrommel"));
-        
         //Zuweisung der Parameter aus der Spannungsquelle
         /*Antrieb_Komponenten.Spannungsquelle spannungsquelle(
-                U = U);*/
-        //Zuweisung der Parameter aus der Seiltrommel
+                        U = U);*/
+ //Zuweisung der Parameter aus der Seiltrommel
         /*Antrieb_Komponenten.Seiltrommel seiltrommel1(
-                r = r, 
-                w_max = w_max, 
-                s_max = s_max);*/
-        //Antrieb_Komponenten.Spannungsquelle.U=U;
-      /*Zuweisung der Parameter aus dem Motor Antrieb_Komponenten.Motor motor(
-                Jgm = Jgm,
-                d = d,
-                b = b,
-                Ia_rat = Ia_rat,
-                Ia_sat = Ia_sat,
-                crem = crem,
-                csat = csat,
-                ke_rat = ke_rat,
-                R_fw = R_fw,
-                R_a = R_a,
-                L_fw = L_fw,
-                L_a = L_a,
-                U_b = U_b); */
-              
+                        r = r, 
+                        w_max = w_max, 
+                        s_max = s_max);*/
+ //Antrieb_Komponenten.Spannungsquelle.U=U;
+        /*Zuweisung der Parameter aus dem Motor Antrieb_Komponenten.Motor motor(
+                        Jgm = Jgm,
+                        d = d,
+                        b = b,
+                        Ia_rat = Ia_rat,
+                        Ia_sat = Ia_sat,
+                        crem = crem,
+                        csat = csat,
+                        ke_rat = ke_rat,
+                        R_fw = R_fw,
+                        R_a = R_a,
+                        L_fw = L_fw,
+                        L_a = L_a,
+                        U_b = U_b); */
         Flaschenzug_Gruppe6.Flaschenzug_Komponenten.Antrieb.Antrieb_Komponenten.Spannungsquelle spannungsquelle1 annotation(
           Placement(visible = true, transformation(origin = {-60, -20}, extent = {{-8, -7.3}, {8, 7.3}}, rotation = 0)));
   Flaschenzug_Gruppe6.Flaschenzug_Komponenten.Antrieb.Antrieb_Komponenten.Motor motor1 annotation(
@@ -2979,8 +2976,7 @@ package Flaschenzug_Gruppe6 "Modell zur Erstellung eines Flaschenzuges im Rahmen
           seilConnect1.nGes = 0;
           Fz + seilConnect1.Fz = 0;
           seilPort1.r = r;
-          F_za = seilConnect1.Fz;
-// ((-abs(seilPort1.w) / w_max) + 1);
+          F_za = -seilConnect1.Fz;
           v_Motor = seilPort1.w * r;
 
           der(s_tr) = v_Motor;
@@ -4412,7 +4408,7 @@ des Motors verbunden; dient zum Aufrollen des Seils vom Flaschenzug</p><p class=
       equation
         seilConnect1.Fz = Wirk * seilConnect2.Fz;
         seilConnect1.s = seilConnect2.s;
-        seilConnect1.nGes + seilConnect2.nGes = n;
+        seilConnect1.nGes + seilConnect2.nGes + n = 0;
        
         seilConnect1.h = seilConnect2.h;
         seilConnect1.Fg = seilConnect2.Fg;
@@ -5179,7 +5175,7 @@ des Motors verbunden; dient zum Aufrollen des Seils vom Flaschenzug</p><p class=
         Placement(visible = true, transformation(origin = {16, -65.0588}, extent = {{-24.5, -25.9412}, {24.5, 25.9412}}, rotation = 0)));
   Flaschenzug_Gruppe6.Flaschenzug_Komponenten.Scope scope1 annotation(
         Placement(visible = true, transformation(origin = {-70.2346, 65.0656}, extent = {{-21.8654, -29.0344}, {21.8654, 29.0344}}, rotation = 0)));
-  Flaschenzug_Gruppe6.Flaschenzug_Komponenten.Antrieb.Antrieb antrieb1 annotation(
+  Flaschenzug_Gruppe6.Flaschenzug_Komponenten.Antrieb.Antrieb antrieb1(U = 20)  annotation(
         Placement(visible = true, transformation(origin = {-63.7073, -50.87}, extent = {{-36.7073, -15.7317}, {36.7073, 15.2073}}, rotation = 0)));
     equation
       connect(antrieb1.seilConnect1, rolle2.seilConnect2) annotation(
