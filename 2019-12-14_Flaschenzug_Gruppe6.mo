@@ -2154,35 +2154,34 @@ package Flaschenzug_Gruppe6 "Modell zur Erstellung eines Flaschenzuges im Rahmen
         parameter Modelica.SIunits.Voltage U_b = 0.5 "Bürstenspannung" annotation(
         Dialog(tab = "Motor"));
         //Parameter aus der Seiltrommel
-        parameter Modelica.SIunits.Length r = 0.1 "Seiltrommelradius" annotation(
+        parameter Modelica.SIunits.Length r1 "Seiltrommelradius" annotation(
         Dialog(tab = "Seiltrommel"));
-        parameter Modelica.SIunits.AngularVelocity w_max = 12000 "Maximal zulässige Drehzahl" annotation(
+        parameter Modelica.SIunits.AngularVelocity w_max1  "Maximal zulässige Drehzahl" annotation(
         Dialog(tab = "Seiltrommel"));
-        parameter Modelica.SIunits.Length s_max = 0.1 "maximale Seillänge" annotation(
+        parameter Modelica.SIunits.Length s_max1  "maximale Seillänge" annotation(
         Dialog(tab = "Seiltrommel"));
         //Zuweisung der Parameter aus der Spannungsquelle
         /*Antrieb_Komponenten.Spannungsquelle spannungsquelle(
-                        U = U);*/
+                                U = U);
  //Zuweisung der Parameter aus der Seiltrommel
-        /*Antrieb_Komponenten.Seiltrommel seiltrommel1(
-                        r = r, 
-                        w_max = w_max, 
-                        s_max = s_max);*/
- //Antrieb_Komponenten.Spannungsquelle.U=U;
-        /*Zuweisung der Parameter aus dem Motor Antrieb_Komponenten.Motor motor(
-                        Jgm = Jgm,
-                        d = d,
-                        b = b,
-                        Ia_rat = Ia_rat,
-                        Ia_sat = Ia_sat,
-                        crem = crem,
-                        csat = csat,
-                        ke_rat = ke_rat,
-                        R_fw = R_fw,
-                        R_a = R_a,
-                        L_fw = L_fw,
-                        L_a = L_a,
-                        U_b = U_b); */
+        Antrieb_Komponenten.Seiltrommel seiltrommel(
+        s_max = s_max1,
+        r = r1,
+        w_max = w_max1);
+        /*Antrieb_Komponenten.Motor motor2(
+                                Jgm = Jgm,
+                                d = d,
+                                b = b,
+                                Ia_rat = Ia_rat,
+                                Ia_sat = Ia_sat,
+                                crem = crem,
+                                csat = csat,
+                                ke_rat = ke_rat,
+                                R_fw = R_fw,
+                                R_a = R_a,
+                                L_fw = L_fw,
+                                L_a = L_a,
+                                U_b = U_b);*/
         Flaschenzug_Gruppe6.Flaschenzug_Komponenten.Antrieb.Antrieb_Komponenten.Spannungsquelle spannungsquelle1 annotation(
           Placement(visible = true, transformation(origin = {-60, -20}, extent = {{-8, -7.3}, {8, 7.3}}, rotation = 0)));
   Flaschenzug_Gruppe6.Flaschenzug_Komponenten.Antrieb.Antrieb_Komponenten.Motor motor1 annotation(
@@ -3717,7 +3716,7 @@ des Motors verbunden; dient zum Aufrollen des Seils vom Flaschenzug</p><p class=
       equation
       
         seilConnect1.Fz * (abs(seilConnect1.nGes) + 1 + n) * (eta / 100) = Fgm;
-        Fgm = m * a + Fg;
+        Fgm = abs(m * a + Fg);
         Fg = m * g_n;
         h = seilConnect1.s / (seilConnect1.nGes + 1 + n);
         v_Masse = der(h);
@@ -4406,9 +4405,9 @@ des Motors verbunden; dient zum Aufrollen des Seils vom Flaschenzug</p><p class=
         Real Wirk = if abs(seilConnect1.nGes) > abs(seilConnect2.nGes) then (eta / 100) ^ n else 1 / (eta / 100) ^ n;
          
       equation
-        seilConnect1.Fz = Wirk * seilConnect2.Fz;
+        (seilConnect1.Fz) = abs(Wirk * (seilConnect2.Fz));
         seilConnect1.s = seilConnect2.s;
-        seilConnect1.nGes + seilConnect2.nGes + n = 0;
+        seilConnect1.nGes + seilConnect2.nGes = n;
        
         seilConnect1.h = seilConnect2.h;
         seilConnect1.Fg = seilConnect2.Fg;
@@ -5147,7 +5146,7 @@ des Motors verbunden; dient zum Aufrollen des Seils vom Flaschenzug</p><p class=
         Placement(visible = true, transformation(origin = {66.8192, -15.1808}, extent = {{-32.8192, -32.8192}, {26.2553, 42.6649}}, rotation = 0)));
       Flaschenzug_Gruppe6.Flaschenzug_Komponenten.Anschlussarten.Rolle rolle1 annotation(
         Placement(visible = true, transformation(origin = {2, 2.70589}, extent = {{-24.5, -25.9412}, {24.5, 25.9412}}, rotation = 0)));
-      Flaschenzug_Gruppe6.Flaschenzug_Komponenten.Antrieb.Antrieb antrieb1 annotation(
+      Flaschenzug_Gruppe6.Flaschenzug_Komponenten.Antrieb.Antrieb antrieb1(U = 20, d = 1)  annotation(
         Placement(visible = true, transformation(origin = {-51.9081, -44.1238}, extent = {{-41.0919, -17.6108}, {41.0919, 17.0238}}, rotation = 0)));
       Flaschenzug_Gruppe6.Flaschenzug_Komponenten.Scope scope1 annotation(
         Placement(visible = true, transformation(origin = {-62.2469, 30.2623}, extent = {{-19.8531, -26.3623}, {19.8531, 26.3623}}, rotation = 0)));
